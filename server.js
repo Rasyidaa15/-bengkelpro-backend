@@ -3,7 +3,7 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const path = require('path');
 
-// IMPORT DARI MODELS, BUKAN config/db
+// IMPORT DARI MODELS
 const { sequelize } = require('./models');
 
 dotenv.config();
@@ -42,8 +42,9 @@ const PORT = process.env.PORT || 5000;
     await sequelize.authenticate();
     console.log('✅ Database Connected');
 
-    // Membuat tabel jika belum ada
-    await sequelize.sync({ alter: true });
+    // 🔥 FIX UTAMA: JANGAN PAKAI alter / force di production/dev normal
+    await sequelize.sync();
+
     console.log('✅ Database Synced');
 
     app.listen(PORT, () => {
