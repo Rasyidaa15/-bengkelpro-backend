@@ -7,23 +7,23 @@ const Service = require('./Service');
 const Order = require('./Order');
 const OrderItem = require('./OrderItem');
 
-User.hasMany(Order);
-Order.belongsTo(User);
+User.hasMany(Order, { foreignKey: 'UserId' });
+Order.belongsTo(User, { foreignKey: 'UserId' });
 
-Category.hasMany(Product);
-Product.belongsTo(Category);
+Category.hasMany(Product, { foreignKey: 'categoryId' });
+Product.belongsTo(Category, { foreignKey: 'categoryId' });
 
-Supplier.hasMany(Product);
-Product.belongsTo(Supplier);
+Supplier.hasMany(Product, { foreignKey: 'supplierId' });
+Product.belongsTo(Supplier, { foreignKey: 'supplierId' });
 
-Service.hasMany(OrderItem);
-OrderItem.belongsTo(Service);
+Service.hasMany(OrderItem, { foreignKey: 'ServiceId' });
+OrderItem.belongsTo(Service, { foreignKey: 'ServiceId' });
 
-Order.hasMany(OrderItem);
-OrderItem.belongsTo(Order);
+Order.hasMany(OrderItem, { foreignKey: 'OrderId' });
+OrderItem.belongsTo(Order, { foreignKey: 'OrderId' });
 
-Product.hasMany(OrderItem);
-OrderItem.belongsTo(Product);
+Product.hasMany(OrderItem, { foreignKey: 'ProductId' });
+OrderItem.belongsTo(Product, { foreignKey: 'ProductId' });
 
 module.exports = {
   sequelize,
