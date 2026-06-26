@@ -1,11 +1,15 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
-const sequelize = require('./config/db');
 const path = require('path');
 
+// IMPORT DARI MODELS, BUKAN config/db
+const { sequelize } = require('./models');
+
 dotenv.config();
+
 const app = express();
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -24,17 +28,28 @@ app.use('/api/admin', require('./routes/adminRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/upload', require('./routes/uploadRoutes'));
 
+// ERROR HANDLER
 app.use((err, req, res, next) => {
   console.error('❌ Error:', err.stack);
   res.status(500).json({ message: err.message });
 });
 
 const PORT = process.env.PORT || 5000;
-sequelize.authenticate().then(() => {
-  app.listen(PORT, () => {
-    console.log(`✅ Server running on port ${PORT}`);
-    console.log(`✅ Database: ${process.env.DB_NAME}`);
-  });
-}).catch(err => {
-  console.error('❌ Database error:', err.message);
-});
+
+// CONNECT DATABASE
+(async () => {
+  try {
+    await sequelize.authenticate();
+    console.log('✅ Database Connected');
+
+    // Membuat tabel jika belum ada
+    await sequelize.sync({ alter: true });
+    console.log('✅ Database Synced');
+
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT}`);
+    });
+  } catch (err) {
+    console.error('❌ Database Error:', err);
+  }
+})();
