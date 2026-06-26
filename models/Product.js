@@ -10,6 +10,8 @@ const Product = sequelize.define('Product', {
   image: { type: DataTypes.STRING },
   categoryId: { type: DataTypes.INTEGER, allowNull: false },
   supplierId: { type: DataTypes.INTEGER, allowNull: false },
+}, {
+  timestamps: false
 });
 
 module.exports = Product;

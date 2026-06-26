@@ -7,7 +7,7 @@ exports.getProducts = async (req, res) => {
         { model: Category, attributes: ['name'] },
         { model: Supplier, attributes: ['name'] }
       ],
-      order: [['createdAt', 'DESC']],
+      order: [['id', 'DESC']],
     });
     console.log('✅ Products found:', products.length);
     res.status(200).json(products);
