@@ -11,11 +11,15 @@ const { protect, admin } = require('../middleware/auth');
 
 const router = express.Router();
 
-// PUBLIC
+// ======================
+// PUBLIC ROUTES
+// ======================
 router.get('/', getProducts);
 router.get('/:id', getProductById);
 
-// ADMIN
+// ======================
+// ADMIN ONLY
+// ======================
 router.post('/', protect, admin, createProduct);
 router.put('/:id', protect, admin, updateProduct);
 router.delete('/:id', protect, admin, deleteProduct);
